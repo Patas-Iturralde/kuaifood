@@ -61,6 +61,8 @@ flutter:
   # To add assets to your application, add an assets section, like this:
   assets:
   - img/kuai_logo.png
+  - img/KuaiFoodLogo.png
+  - img/KuaiFoodLogo_Negativo.png
   - img/logo_inicio.png
   - img/seco.jpeg
 

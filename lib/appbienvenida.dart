@@ -43,7 +43,7 @@ class _appbienvenidaState extends State<appbienvenida> {
               SizedBox(
                 width: 300,
                 height: 300,
-                child: Image.asset('img/kuai_logo.png'),
+                child: Image.asset('img/KuaiFoodLogo.png'),
               )
             ],
           ),

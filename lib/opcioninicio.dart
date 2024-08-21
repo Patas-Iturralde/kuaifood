@@ -25,7 +25,7 @@ class _opcionInicioState extends State<opcionInicio> {
               SizedBox(
                 width: 300,
                 height: 300,
-                child: Image.asset('img/logo_inicio.png'),
+                child: Image.asset('img/KuaiFoodLogo_Negativo.png'),
               ),
               const SizedBox(
                 height: 50,
