@@ -70,21 +70,25 @@ app.post("/restaurantes", (req, res) => {
   const {
     nombre,
     horario,
-    metodos_pago,
-    metodos_entrega,
+    metodo_pago_efectivo,
+    metodo_pago_transferencia,
+    metodo_entrega_domicilio,
+    metodo_entrega_local,
     correo,
     contrasenia,
     telefono,
   } = req.body;
   const sql =
-    "INSERT INTO restaurantes (nombre, horario, metodos_pago, metodos_entrega, correo, contrasenia, telefono) VALUES (?, ?, ?, ?, ?, ?, ?)";
+    "INSERT INTO restaurantes (nombre, horario, metodo_pago_efectivo, metodo_pago_transferencia, metodo_entrega_domicilio, metodo_entrega_local, correo, contrasenia, telefono) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
   db.query(
     sql,
     [
       nombre,
       horario,
-      metodos_pago,
-      metodos_entrega,
+      metodo_pago_efectivo,
+      metodo_pago_transferencia,
+      metodo_entrega_domicilio,
+      metodo_entrega_local,
       correo,
       contrasenia,
       telefono,
@@ -110,21 +114,25 @@ app.put("/restaurantes/:id", (req, res) => {
   const {
     nombre,
     horario,
-    metodos_pago,
-    metodos_entrega,
+    metodo_pago_efectivo,
+    metodo_pago_transferencia,
+    metodo_entrega_domicilio,
+    metodo_entrega_local,
     correo,
     contrasenia,
     telefono,
   } = req.body;
   const sql =
-    "UPDATE restaurantes SET nombre = ?, horario = ?, metodos_pago = ?, metodos_entrega = ?, correo = ?, contrasenia = ?, telefono = ? WHERE id = ?";
+    "UPDATE restaurantes SET nombre = ?, horario = ?, metodo_pago_efectivo = ?, metodo_pago_transferencia = ?, metodo_entrega_domicilio = ?, metodo_entrega_local = ?, correo = ?, contrasenia = ?, telefono = ? WHERE id = ?";
   db.query(
     sql,
     [
       nombre,
       horario,
-      metodos_pago,
-      metodos_entrega,
+      metodo_pago_efectivo,
+      metodo_pago_transferencia,
+      metodo_entrega_domicilio,
+      metodo_entrega_local,
       correo,
       contrasenia,
       telefono,
@@ -198,18 +206,18 @@ app.delete("/pedidos/:id", (req, res) => {
 app.post("/menu", (req, res) => {
   const {
     numero_almuerzos,
-    sopas,
+    sopa,
     plato_fuerte,
-    postres,
-    jugos,
-    ensaladas,
-    extras,
+    postre,
+    jugo,
+    ensalada,
+    extra1,
   } = req.body;
   const sql =
-    "INSERT INTO menu (numero_almuerzos, sopas, plato_fuerte, postres, jugos, ensaladas, extras) VALUES (?, ?, ?, ?, ?, ?, ?)";
+    "INSERT INTO menu (numero_almuerzos, sopa, plato_fuerte, postre, jugo, ensalada, extra1) VALUES (?, ?, ?, ?, ?, ?, ?)";
   db.query(
     sql,
-    [numero_almuerzos, sopas, plato_fuerte, postres, jugos, ensaladas, extras],
+    [numero_almuerzos, sopa, plato_fuerte, postre, jugo, ensalada, extra1],
     (err, result) => {
       if (err) throw err;
       res.send("Menú registrado");
@@ -230,27 +238,18 @@ app.put("/menu/:id", (req, res) => {
   const { id } = req.params;
   const {
     numero_almuerzos,
-    sopas,
+    sopa,
     plato_fuerte,
-    postres,
-    jugos,
-    ensaladas,
-    extras,
+    postre,
+    jugo,
+    ensalada,
+    extra1,
   } = req.body;
   const sql =
-    "UPDATE menu SET numero_almuerzos = ?, sopas = ?, plato_fuerte = ?, postres = ?, jugos = ?, ensaladas = ?, extras = ? WHERE id = ?";
+    "UPDATE menu SET numero_almuerzos = ?, sopa = ?, plato_fuerte = ?, postre = ?, jugo = ?, ensalada = ?, extra1 = ? WHERE id = ?";
   db.query(
     sql,
-    [
-      numero_almuerzos,
-      sopas,
-      plato_fuerte,
-      postres,
-      jugos,
-      ensaladas,
-      extras,
-      id,
-    ],
+    [numero_almuerzos, sopa, plato_fuerte, postre, jugo, ensalada, extra1, id],
     (err, result) => {
       if (err) throw err;
       res.send("Menú actualizado");
