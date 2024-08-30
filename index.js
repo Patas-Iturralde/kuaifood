@@ -12,6 +12,18 @@ const db = mysql.createConnection({
   database: "restaurante",
 });
 
+app.use(
+  session({
+    key: "userId",
+    secret: "ProjectLD",
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+      expires: 60 * 60 * 24,
+    },
+  })
+);
+
 db.connect((err) => {
   if (err) throw err;
   console.log("Conectado a la base de datos MySQL");
@@ -269,4 +281,39 @@ app.delete("/menu/:id", (req, res) => {
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`Servidor corriendo en el puerto ${PORT}`);
+});
+
+/**Login Auth */
+app.get("/login", (req, res) => {
+  if (req.session.correo) {
+    res.send({ loggedIn: true, user: req.session.correo });
+  } else {
+    res.send({ loggedIn: false });
+  }
+});
+
+app.post("/login", (req, res) => {
+  const correo = req.body.mail;
+  const contrasenia = req.body.pass;
+  db.query("SELECT * FROM usuario WHERE mail = ?", mail, (err, result) => {
+    var string = JSON.stringify(result);
+    //console.log('>> string: ', string );
+    var json = JSON.parse(string);
+    console.log(json[0]);
+    if (err) {
+      res.send({ err: err });
+    }
+
+    if (result.length > 0) {
+      if (pass === json[0].pass) {
+        req.session.mail = result;
+        console.log(result);
+        res.send(result);
+      } else {
+        res.send({ message: "Usuario o contraseña incorrectos" });
+      }
+    } else {
+      res.send({ message: "Usuario no existe" });
+    }
+  });
 });
