@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:kuaifood/registrarmenu.dart';
 
-// ignore: camel_case_types
 class inicio extends StatefulWidget {
   const inicio({super.key});
 
@@ -8,12 +8,44 @@ class inicio extends StatefulWidget {
   State<inicio> createState() => _inicioState();
 }
 
-// ignore: camel_case_types
 class _inicioState extends State<inicio> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color.fromARGB(255, 96, 218, 63),   
+      backgroundColor: Color.fromARGB(255, 96, 218, 63),
+      appBar: AppBar(
+        title: Text('Inicio'),
+        backgroundColor: Color.fromRGBO(2, 110, 95, 1),
+      ),
+      drawer: Drawer(
+        child: ListView(
+          padding: EdgeInsets.zero,
+          children: <Widget>[
+            DrawerHeader(
+              decoration: BoxDecoration(
+                color: Color.fromRGBO(2, 110, 95, 1),
+              ),
+              child: Text(
+                'Menú',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 24,
+                ),
+              ),
+            ),
+            ListTile(
+              leading: Icon(Icons.restaurant_menu),
+              title: Text('Registrar Menú'),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => RegistrarMenu()),
+                );
+              },
+            ),
+          ],
+        ),
+      ),
       body: ListView.builder(
         itemCount: Menus.length + 3, // Dos tarjetas adicionales
         itemBuilder: (context, index) {
@@ -31,28 +63,26 @@ class _inicioState extends State<inicio> {
                     style: TextStyle(
                       color: Color.fromARGB(255, 255, 255, 255),
                       fontWeight: FontWeight.bold,
-                      fontSize:
-                          24.0, // Adjust font size here (e.g., 16, 18, 20)
+                      fontSize: 24.0,
                     ),
                   ),
                 ),
               )
             ]);
           } else if (index == 2) {
-            // Tarjeta adicional 2
+            // Tarjeta adicional 3
             return Column(
               children: [
                 Title(
                   color: Colors.black,
                   child: const Padding(
-                    padding: EdgeInsets.symmetric(
-                        horizontal: 20.0), // Add padding to sides
+                    padding: EdgeInsets.symmetric(horizontal: 20.0),
                     child: Text(
-                      "Disfruta de esta gran varidad de platos que ofrecemos",
+                      "Disfruta de esta gran variedad de platos que ofrecemos",
                       style: TextStyle(
                         color: Color.fromARGB(255, 255, 255, 255),
                         fontSize: 12.0,
-                        fontWeight: FontWeight.bold, // Center the text
+                        fontWeight: FontWeight.bold,
                       ),
                     ),
                   ),
@@ -131,3 +161,5 @@ final List<Menu> Menus = [
     imagen: 'img/seco.jpeg',
   ) // Agrega más Menus aquí
 ];
+
+
