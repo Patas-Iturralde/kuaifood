@@ -74,6 +74,34 @@ class _inicioState extends State<inicio> {
     }
   }
 
+  // Función para reducir el número de almuerzos y actualizar en la base de datos
+  Future<void> restarAlmuerzos(int menuId, int numeroAlmuerzos) async {
+    if (numeroAlmuerzos > 0) {
+      final url = Uri.parse('http://10.0.2.2:3000/menu/$menuId');
+      
+      try {
+        final response = await http.put(
+          url,
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: json.encode({"numero_almuerzos": numeroAlmuerzos - 1}),
+        );
+
+        if (response.statusCode == 200) {
+          // Actualizar la lista de menús en la interfaz
+          setState(() {
+            menus.firstWhere((menu) => menu.id == menuId).numeroAlmuerzos--;
+          });
+        } else {
+          throw Exception('Error al actualizar el número de almuerzos');
+        }
+      } catch (e) {
+        print('Error de conexión: $e');
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -113,7 +141,8 @@ class _inicioState extends State<inicio> {
                     onTap: () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => RegistrarMenu()),
+                        MaterialPageRoute(
+                            builder: (context) => RegistrarMenu()),
                       );
                     },
                   ),
@@ -123,82 +152,108 @@ class _inicioState extends State<inicio> {
           : null, // Si no es restaurante, no mostramos el Drawer
       body: isLoading
           ? Center(child: CircularProgressIndicator()) // Indicador de carga
-          : menus.isEmpty 
-            ? Center(child: Text('No hay menús disponibles para hoy')) // Mensaje si no hay menús
-            : ListView.builder(
-              itemCount: menus.length + 3, // Dos tarjetas adicionales
-              itemBuilder: (context, index) {
-                if (index == 0) {
-                  return SizedBox(height: 30);
-                } else if (index == 1) {
-                  return Column(children: [
-                    Container(
-                      child: Title(
-                        color: Colors.black,
-                        child: const Text(
-                          "Bienvenido",
-                          style: TextStyle(
-                            color: Color.fromARGB(255, 255, 255, 255),
-                            fontWeight: FontWeight.bold,
-                            fontSize: 24.0,
-                          ),
-                        ),
-                      ),
-                    )
-                  ]);
-                } else if (index == 2) {
-                  return Column(
-                    children: [
-                      Title(
-                        color: Colors.black,
-                        child: const Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 20.0),
-                          child: Text(
-                            "Disfruta de esta gran variedad de platos que ofrecemos",
-                            style: TextStyle(
-                              color: Color.fromARGB(255, 255, 255, 255),
-                              fontSize: 12.0,
-                              fontWeight: FontWeight.bold,
+          : menus.isEmpty
+              ? Center(child: Text('No hay menús disponibles para hoy')) // Mensaje si no hay menús
+              : ListView.builder(
+                  itemCount: menus.length + 3, // Dos tarjetas adicionales
+                  itemBuilder: (context, index) {
+                    if (index == 0) {
+                      return SizedBox(height: 30);
+                    } else if (index == 1) {
+                      return Column(children: [
+                        Container(
+                          child: Title(
+                            color: Colors.black,
+                            child: const Text(
+                              "Bienvenido",
+                              style: TextStyle(
+                                color: Color.fromARGB(255, 255, 255, 255),
+                                fontWeight: FontWeight.bold,
+                                fontSize: 24.0,
+                              ),
                             ),
                           ),
-                        ),
-                      )
-                    ],
-                  );
-                } else {
-                  // Tarjetas de menús obtenidos desde la API
-                  final menuIndex = index - 3;
-                  return Card(
-                    child: Column(
-                      children: [
-                        ListTile(
-                          subtitle: Text(
-                            "Plato Fuerte: ${menus[menuIndex].platoFuerte}",
-                            style: TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold,
+                        )
+                      ]);
+                    } else if (index == 2) {
+                      return Column(
+                        children: [
+                          Title(
+                            color: Colors.black,
+                            child: const Padding(
+                              padding: EdgeInsets.symmetric(horizontal: 20.0),
+                              child: Text(
+                                "Disfruta de esta gran variedad de platos que ofrecemos",
+                                style: TextStyle(
+                                  color: Color.fromARGB(255, 255, 255, 255),
+                                  fontSize: 12.0,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
                             ),
-                          ),
+                          )
+                        ],
+                      );
+                    } else {
+                      // Tarjetas de menús obtenidos desde la API
+                      final menuIndex = index - 3;
+                      return Card(
+                        child: Column(
+                          children: [
+                            ListTile(
+                              subtitle: Text(
+                                "Plato Fuerte: ${menus[menuIndex].platoFuerte}",
+                                style: TextStyle(
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
+                            SizedBox(
+                              width: 370,
+                              child: Text(
+                                'Sopa: ${menus[menuIndex].sopas} \n'
+                                'Postres: ${menus[menuIndex].postres} \n'
+                                'Jugos: ${menus[menuIndex].jugos} \n'
+                                'Ensaladas: ${menus[menuIndex].ensaladas} \n'
+                                'Extras: ${menus[menuIndex].extras} \n'
+                                'Número de almuerzos: ${menus[menuIndex].numeroAlmuerzos} \n'
+                                'Fecha: ${menus[menuIndex].fecha}',
+                                style: TextStyle(),
+                              ),
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                // Mostrar los almuerzos disponibles
+                                Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Text(
+                                    'Disponibles: ${menus[menuIndex].numeroAlmuerzos}',
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.red,
+                                    ),
+                                  ),
+                                ),
+                                // Botón para restar almuerzos
+                                ElevatedButton(
+                                  onPressed: () {
+                                    restarAlmuerzos(menus[menuIndex].id, menus[menuIndex].numeroAlmuerzos);
+                                  },
+                                  child: Text('Reservar almuerzo'),
+                                  style: ElevatedButton.styleFrom(
+                                    primary: Color.fromARGB(255, 74, 207, 33), // Color del botón
+                                  ),
+                                ),
+                              ],
+                            )
+                          ],
                         ),
-                        SizedBox(
-                          width: 370,
-                          child: Text(
-                            'Sopa: ${menus[menuIndex].sopas} \n'
-                            'Postres: ${menus[menuIndex].postres} \n'
-                            'Jugos: ${menus[menuIndex].jugos} \n'
-                            'Ensaladas: ${menus[menuIndex].ensaladas} \n'
-                            'Extras: ${menus[menuIndex].extras} \n'
-                            'Número de almuerzos: ${menus[menuIndex].numeroAlmuerzos} \n'
-                            'Fecha: ${menus[menuIndex].fecha}',
-                            style: TextStyle(),
-                          ),
-                        ),
-                      ],
-                    ),
-                  );
-                }
-              },
-            ),
+                      );
+                    }
+                  },
+                ),
     );
   }
 }
@@ -206,7 +261,7 @@ class _inicioState extends State<inicio> {
 // Clase Menu para manejar los menús
 class Menu {
   final int id;
-  final int numeroAlmuerzos;
+  int numeroAlmuerzos; // Convertido a variable mutable
   final String sopas;
   final String platoFuerte;
   final String postres;

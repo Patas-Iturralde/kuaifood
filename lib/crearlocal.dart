@@ -321,6 +321,7 @@ class _crearLocalState extends State<crearLocal> {
                               metodoPagoTransferencia = value!;
                             });
                           },
+                          enabled: false,
                         ),
                       ],
                     ),
@@ -337,6 +338,7 @@ class _crearLocalState extends State<crearLocal> {
                               metodoEntregaDomicilio = value!;
                             });
                           },
+                          enabled: false,
                         ),
                         CheckboxListTile(
                           title: const Text("En el local"),
