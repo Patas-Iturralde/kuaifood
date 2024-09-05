@@ -14,7 +14,7 @@ class MyApp extends StatelessWidget {
           initialRoute: "inicio",
           routes: {
             "inicio": (context) => const appbienvenida(),
-            "login": (context) => const inicio(),
+            "login": (context) => const inicio(esRestaurante: true,),
           });
   }
 }

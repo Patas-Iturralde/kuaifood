@@ -55,7 +55,7 @@ class _opcionInicioState extends State<opcionInicio> {
               ElevatedButton(
                 onPressed: () {
                   Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => inicio()));
+                      MaterialPageRoute(builder: (context) => inicio(esRestaurante: false,)));
                 },
                 child: Text('Continuar sin iniciar sesión'),
                 style: ButtonStyle(
