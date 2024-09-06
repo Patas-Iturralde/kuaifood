@@ -5,8 +5,9 @@ import 'package:kuaifood/registrarmenu.dart'; // Para manejar JSON
 
 class inicio extends StatefulWidget {
   final bool esRestaurante; // Determina si es un restaurante
+  final bool sinSesion; // Determina si se inició sesión o no
 
-  const inicio({super.key, required this.esRestaurante});
+  const inicio({super.key, required this.esRestaurante, this.sinSesion = false});
 
   @override
   State<inicio> createState() => _inicioState();
@@ -238,9 +239,11 @@ class _inicioState extends State<inicio> {
                                 ),
                                 // Botón para restar almuerzos
                                 ElevatedButton(
-                                  onPressed: () {
-                                    restarAlmuerzos(menus[menuIndex].id, menus[menuIndex].numeroAlmuerzos);
-                                  },
+                                  onPressed: (widget.sinSesion || menus[menuIndex].numeroAlmuerzos == 0)
+                                      ? null
+                                      : () {
+                                          restarAlmuerzos(menus[menuIndex].id, menus[menuIndex].numeroAlmuerzos);
+                                        },
                                   child: Text('Reservar almuerzo'),
                                   style: ElevatedButton.styleFrom(
                                     primary: Color.fromARGB(255, 74, 207, 33), // Color del botón

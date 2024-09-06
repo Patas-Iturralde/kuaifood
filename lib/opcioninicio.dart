@@ -54,15 +54,19 @@ class _opcionInicioState extends State<opcionInicio> {
                   )),
               ElevatedButton(
                 onPressed: () {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => inicio(esRestaurante: false,)));
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) =>
+                            inicio(esRestaurante: false, sinSesion: true)),
+                  );
                 },
                 child: Text('Continuar sin iniciar sesión'),
                 style: ButtonStyle(
-                    backgroundColor: MaterialStateProperty.all(
-                        Color.fromARGB(255, 96, 218, 63)),
-                    foregroundColor: MaterialStateProperty.all(Colors.white),
-                  )
+                  backgroundColor: MaterialStateProperty.all(
+                      Color.fromARGB(255, 96, 218, 63)),
+                  foregroundColor: MaterialStateProperty.all(Colors.white),
+                ),
               ),
             ],
           )
